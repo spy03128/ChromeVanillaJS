@@ -8,10 +8,17 @@
 // const what = "jihyeon";
 // console.log(what);
 
-function sayhello(name, age){
-    // console.log('Hello!', name," You have ",age," years of age.");
-    console.log(`Hello ${name} you are ${age} years old.`);
-}
+// function sayhello(name, age){
+//     // console.log('Hello!', name," You have ",age," years of age.");
+//     console.log(`Hello ${name} you are ${age} years old.`);
+// }
 
-sayhello("Nicolas",15);
-console.log()
+// sayhello("Nicolas",15);
+// console.log()
+
+const title = document.getElementById("title")
+
+console.dir(title);
+console.error("Fuck");
+title.innerHTML = "Hi From JS";
+title.style.color = 'white';
