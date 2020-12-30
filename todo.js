@@ -3,22 +3,42 @@ const toDoForm = document.querySelector(".js-toDoForm"),
   toDoList = document.querySelector(".js-toDoList");
 
 const TODOS_LS = "toDos";
-const toDos = [];
+let toDos = [];
+
+function deleteToDo(event) {
+  const btn = event.target;
+  console.log(event);
+  const li = btn.parentNode;
+  toDoList.removeChild(li);
+  const cleanToDos = toDos.filter(function (toDo) {
+    return toDo.id !== parseInt(li.id); //parseInt 는 숫자로 바꾸는것 string -> int
+  });
+  toDos = cleanToDos;
+  saveToDos();
+}
+
+function saveToDos() {
+  localStorage.setItem(TODOS_LS, JSON.stringify(toDos));
+}
 
 function paintToDo(text) {
   const makeLi = document.createElement("li");
   const delBtn = document.createElement("button");
-  delBtn.innerText = "❌";
   const span = document.createElement("span");
+  const newId = toDos.length + 1;
+  delBtn.innerText = "❌";
+  delBtn.addEventListener("click", deleteToDo);
   span.innerText = text;
   makeLi.appendChild(delBtn);
   makeLi.appendChild(span);
   toDoList.appendChild(makeLi);
+  makeLi.id = newId;
   const toDoObj = {
     text: text,
-    id: toDos.length + 1,
+    id: newId,
   };
-  toDos = push(toDoObj);
+  toDos.push(toDoObj);
+  saveToDos();
 }
 
 function handleSubmit(event) {
@@ -31,6 +51,11 @@ function handleSubmit(event) {
 function loadToDos() {
   const loadToDos = localStorage.getItem(TODOS_LS);
   if (loadToDos !== null) {
+    const parsedToDos = JSON.parse(loadToDos);
+    parsedToDos.forEach(function (toDo) {
+      //배열 각각의 인덱스에 대해서 함수를 실행하는 것
+      paintToDo(toDo.text);
+    });
   }
 }
 
